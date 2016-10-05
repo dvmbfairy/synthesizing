@@ -1,5 +1,5 @@
 # Set this to the path to Caffe installation on your system
-caffe_root = "/path/to/your/caffe/python" 
+caffe_root = "/u/amx/caffe/python" 
 gpu = True
 
 # -------------------------------------

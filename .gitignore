@@ -4,9 +4,11 @@
 *.gz
 
 # Images
-*.JPEG
-*.jpg
-*.png
+#*.JPEG
+#*.jpg
+#*.png
+debug/*
+images/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
