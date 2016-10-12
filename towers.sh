@@ -1,9 +1,17 @@
 #/bin/bash
 
+# This script was copied from the 3rd sample script. I had assumed that the 
+# net included an image recognizer and it would synthesize the image based
+# on what it identified. I was wrong. It turned a picture of towers in to a
+# bell pepper.
+
 opt_layer=fc6
 act_layer=fc8
-units=945
+units=945 # 945 refers to line 945 in the text file. it refers to bell pepper
 xy=0
+
+net_weights="nets/placesCNN/places205CNN_iter_300000.caffemodel"
+net_definition="nets/placesCNN/places205CNN_deploy_updated.prototxt"
 
 # Hyperparam settings for visualizing AlexNet
 iters="30"
@@ -65,7 +73,7 @@ for unit in ${units}; do
 done
 
 if [ "${debug}" -eq "1" ]; then
-  output_file=${output_dir}/towers.jpg
+  output_file=${output_dir}/towers_placesnet.jpg
   montage debug/*.jpg -tile 10x20 -geometry +1+1 ${output_file}
   convert ${output_file} -trim ${output_file}
 
