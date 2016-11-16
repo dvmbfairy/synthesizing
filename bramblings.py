@@ -110,7 +110,9 @@ brambling = 10
 for k in range(0,21):
 
   #for category in [1, 295, 353, 381, 417]:
-  for category in [954]:
+  # 954 - banana
+  # 417 - balloon
+  for category in [417]:
     np.random.seed(k)
     code = np.random.normal(0, 1, shape)
 
