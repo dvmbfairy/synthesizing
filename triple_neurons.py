@@ -103,7 +103,7 @@ def pad(classifier, image):
 """
 Generate Random Picture
 """
-neurons = [10, 417, 462] #, 470, 846, 951]
+neurons = [10, 417, 462, 470, 846, 951]
 # brambling, balloon, broom, candle, lamp, lemon
 
 for x in range(0,len(neurons)):
@@ -124,7 +124,7 @@ for x in range(0,len(neurons)):
 
     # Lower bound of 0 due to ReLU
     lower_bound = np.zeros(4096)
-    '''
+    
     for i in range(0,total_iters):
       step_size = (alpha + (1e-10 - alpha) * i) / total_iters
       gx, image = grad(net, 'fc8', neurons[x], code)
@@ -147,34 +147,34 @@ for x in range(0,len(neurons)):
       code = np.minimum(code, 1.5*upper_bound) 
 
     save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
-    '''
+    print "finished with image"
     for z in range (y + 1, len(neurons)):
       # copied and pasted because I'm trash
-      for k in range(0,11):
-        for i in range(0,total_iters):
-          step_size = (alpha + (1e-10 - alpha) * i) / total_iters
-          gx, image = grad(net, 'fc8', neurons[x], code)
-          gx = gx.copy()
-          gy, image = grad(net, 'fc8', neurons[y], code)
-          gy = gy.copy()
-          gz, image = grad(net, 'fc8', neurons[z], code)
+      # for k in range(0,11):
+      for i in range(0,total_iters):
+        step_size = (alpha + (1e-10 - alpha) * i) / total_iters
+        gx, image = grad(net, 'fc8', neurons[x], code)
+        gx = gx.copy()
+        gy, image = grad(net, 'fc8', neurons[y], code)
+        gy = gy.copy()
+        gz, image = grad(net, 'fc8', neurons[z], code)
       
         # To generate image
-          g = (gx + gy + gz) - (k * .1 * (abs(gx - gy) + abs(gx - gz) + abs(gy - gz)))
+        g = (gx + gy + gz) - (0 * .1 * (abs(gx - gy) + abs(gx - gz) + abs(gy - gz)))
       
-          print norm(gx), norm(gy), norm(gz)
+        print norm(gx), norm(gy), norm(gz)
 
-          if norm(g) <= 1e-8:
-            break
-          code = code - step_size*g/np.abs(g).mean()
-          code = np.maximum(code, lower_bound) 
+        if norm(g) <= 1e-8:
+          break
+        code = code - step_size*g/np.abs(g).mean()
+        code = np.maximum(code, lower_bound) 
 
         # 1*upper bound produces realistic looking images
         # No upper bound produces dramatic high saturation pics
         # 1.5* Upper bound is a decent choice
-          code = np.minimum(code, 1.5*upper_bound) 
+        code = np.minimum(code, 1.5*upper_bound) 
 
-        save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") +"_"+ str(k) + "_triple" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
-
+      save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
+      print "finished with image"
 
 
