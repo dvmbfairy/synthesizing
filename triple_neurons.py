@@ -17,6 +17,7 @@ from numpy.linalg import norm
 from numpy.testing import assert_array_equal
 import scipy.misc, scipy.io
 import patchShow
+import datetime
 
 caffe.set_mode_gpu()
 
@@ -102,18 +103,13 @@ def pad(classifier, image):
 """
 Generate Random Picture
 """
-#for category in [0, 111, 184, 199, 171, 140, 78] :
+neurons = [10, 417, 462] #, 470, 846, 951]
+# brambling, balloon, broom, candle, lamp, lemon
 
-w2 = 1000
-brambling = 10
+for x in range(0,len(neurons)):
 
-for k in range(0,21):
-
-  #for category in [1, 295, 353, 381, 417]:
-  # 954 - banana
-  # 417 - balloon
-  for category in [417]:
-    np.random.seed(k)
+  for y in range(x + 1, len(neurons)):
+    np.random.seed(1)
     code = np.random.normal(0, 1, shape)
 
     total_iters = 300
@@ -131,14 +127,14 @@ for k in range(0,21):
 
     for i in range(0,total_iters):
       step_size = (alpha + (1e-10 - alpha) * i) / total_iters
-      gp, image = grad(net, 'fc8', category, code)
-      gp = gp.copy()
-      gn, image = grad(net, 'fc8', brambling, code)
+      gx, image = grad(net, 'fc8', neurons[x], code)
+      gx = gx.copy()
+      gy, image = grad(net, 'fc8', neurons[y], code)
       
       # To generate image
-      g = (gp + gn) - ((0.4 + k * .01) * abs(gp - gn))
+      g = (gx + gy) - (0.5 * abs(gx - gy))
       
-      print norm(gp), norm(gn)
+      print norm(gx), norm(gy)
 
       if norm(g) <= 1e-8:
         break
@@ -150,5 +146,34 @@ for k in range(0,21):
       # 1.5* Upper bound is a decent choice
       code = np.minimum(code, 1.5*upper_bound) 
 
-    save_image(image, "output/bramblings/balloon_test2_" + "_" + str(category) + "_" + str(k) + ".jpg")
+    save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
+
+    for z in range (y + 1, len(neurons)):
+      # copied and pasted because I'm trash
+      for i in range(0,total_iters):
+        step_size = (alpha + (1e-10 - alpha) * i) / total_iters
+        gx, image = grad(net, 'fc8', neurons[x], code)
+        gx = gx.copy()
+        gy, image = grad(net, 'fc8', neurons[y], code)
+        gy = gy.copy()
+        gz, image = grad(net, 'fc8', neurons[z], code)
+      
+        # To generate image
+        g = (gx + gy + gz) - (0.5 * (abs(gx - gy) + abs(gx - gz) + abs(gy - gz)))
+      
+        print norm(gx), norm(gy), norm(gz)
+
+        if norm(g) <= 1e-8:
+          break
+        code = code - step_size*g/np.abs(g).mean()
+        code = np.maximum(code, lower_bound) 
+
+        # 1*upper bound produces realistic looking images
+        # No upper bound produces dramatic high saturation pics
+        # 1.5* Upper bound is a decent choice
+        code = np.minimum(code, 1.5*upper_bound) 
+
+      save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
+
+
 
