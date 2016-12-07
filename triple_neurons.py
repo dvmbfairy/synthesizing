@@ -182,7 +182,7 @@ for x in range(0,len(neurons)):
         # 1.5* Upper bound is a decent choice
         code = np.minimum(code, 1.5*upper_bound) 
 
-      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_movedbounds" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
+      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_movedbounds_checkingseeds" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
       print "finished with image"
 
 
