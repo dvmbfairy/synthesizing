@@ -103,12 +103,12 @@ def pad(classifier, image):
 """
 Generate Random Picture
 """
-neurons = [10, 417, 462, 470, 846, 951]
-# brambling, balloon, broom, candle, lamp, lemon
+neurons = [417, 462, 470, 846, 951]
+# balloon, broom, candle, lamp, lemon
 
 for x in range(0,len(neurons)):
 
-  for y in range(x + 1, len(neurons)):
+  for y in range(len(neurons)):
     np.random.seed(1)
     code = np.random.normal(0, 1, shape)
 
@@ -146,11 +146,14 @@ for x in range(0,len(neurons)):
       # 1.5* Upper bound is a decent choice
       code = np.minimum(code, 1.5*upper_bound) 
 
-    save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
+    #save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
     print "finished with image"
-    for z in range (y + 1, len(neurons)):
+    for z in range (0, len(neurons)):
       # copied and pasted because I'm trash
       # for k in range(0,11):
+      if ((x == y) | (x == z) | (y == z)):
+          continue
+
       for i in range(0,total_iters):
         step_size = (alpha + (1e-10 - alpha) * i) / total_iters
         gx, image = grad(net, 'fc8', neurons[x], code)
