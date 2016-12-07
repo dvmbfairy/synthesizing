@@ -103,7 +103,9 @@ def pad(classifier, image):
 """
 Generate Random Picture
 """
-neurons = [417, 462, 470, 846, 951]
+
+#neurons = [417, 462, 470, 846, 951]
+neurons = [470, 846, 951]
 # balloon, broom, candle, lamp, lemon
 
 for x in range(0,len(neurons)):
@@ -161,6 +163,7 @@ for x in range(0,len(neurons)):
         gy, image = grad(net, 'fc8', neurons[y], code)
         gy = gy.copy()
         gz, image = grad(net, 'fc8', neurons[z], code)
+        gz = gz.copy()
       
         # To generate image
         g = (gx + gy + gz) - (0 * .1 * (abs(gx - gy) + abs(gx - gz) + abs(gy - gz)))
@@ -177,7 +180,7 @@ for x in range(0,len(neurons)):
         # 1.5* Upper bound is a decent choice
         code = np.minimum(code, 1.5*upper_bound) 
 
-      save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
+      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_copy" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
       print "finished with image"
 
 
