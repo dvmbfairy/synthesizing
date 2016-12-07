@@ -126,7 +126,7 @@ for x in range(0,len(neurons)):
 
     # Lower bound of 0 due to ReLU
     lower_bound = np.zeros(4096)
-    
+    '''
     for i in range(0,total_iters):
       step_size = (alpha + (1e-10 - alpha) * i) / total_iters
       gx, image = grad(net, 'fc8', neurons[x], code)
@@ -148,8 +148,9 @@ for x in range(0,len(neurons)):
       # 1.5* Upper bound is a decent choice
       code = np.minimum(code, 1.5*upper_bound) 
 
-    #save_image(image, "output/triple_neurons/" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
+    save_image(image, "output/triple_neurons/sanity" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
     print "finished with image"
+    '''
     for z in range (0, len(neurons)):
       # copied and pasted because I'm trash
       # for k in range(0,11):
@@ -180,7 +181,7 @@ for x in range(0,len(neurons)):
         # 1.5* Upper bound is a decent choice
         code = np.minimum(code, 1.5*upper_bound) 
 
-      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_copy" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
+      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_nopairs" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
       print "finished with image"
 
 
