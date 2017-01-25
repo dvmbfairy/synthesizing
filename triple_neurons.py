@@ -108,10 +108,12 @@ Generate Random Picture
 neurons = [470, 846, 951]
 # balloon, broom, candle, lamp, lemon
 
+'''
 np.random.seed(1)
 code = np.random.normal(0, 1, shape)
 
 total_iters = 300
+
 
 alpha = 1
 # Load the activation range
@@ -123,6 +125,7 @@ upper_bound = upper_bound.reshape(4096)
 
 # Lower bound of 0 due to ReLU
 lower_bound = np.zeros(4096)
+'''
 
 for x in range(0,len(neurons)):
   for y in range(0,len(neurons)):
@@ -157,6 +160,25 @@ for x in range(0,len(neurons)):
       # for k in range(0,11):
       if ((x == y) | (x == z) | (y == z)):
           continue
+      
+      # begin copied over stuff
+      np.random.seed(1)
+      code = np.random.normal(0, 1, shape)
+
+      total_iters = 300
+
+      alpha = 1
+      # Load the activation range
+      upper_bound = lower_bound = None
+
+      # Set up clipping bounds
+      upper_bound = np.loadtxt("act_range/3x/fc6.txt", delimiter=' ', usecols=np.arange(0, 4096), unpack=True)
+      upper_bound = upper_bound.reshape(4096)
+
+      # Lower bound of 0 due to ReLU
+      lower_bound = np.zeros(4096)
+
+
 
       for i in range(0,total_iters):
         step_size = (alpha + (1e-10 - alpha) * i) / total_iters
@@ -182,7 +204,7 @@ for x in range(0,len(neurons)):
         # 1.5* Upper bound is a decent choice
         code = np.minimum(code, 1.5*upper_bound) 
 
-      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_movedbounds_checkingseeds" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
+      save_image(image, "output/triple_neurons/sanity/" + datetime.datetime.now().strftime("%Y%m%d") + "_triple_movedboundswithin" + str(neurons[x]) + "_" + str(neurons[y]) + "_" + str(neurons[z])+".jpg")
       print "finished with image"
 
 
