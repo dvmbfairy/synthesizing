@@ -108,7 +108,7 @@ Generate Random Picture
 neurons = [470, 846, 951]
 # balloon, broom, candle, lamp, lemon
 
-'''
+
 np.random.seed(1)
 code = np.random.normal(0, 1, shape)
 
@@ -125,7 +125,7 @@ upper_bound = upper_bound.reshape(4096)
 
 # Lower bound of 0 due to ReLU
 lower_bound = np.zeros(4096)
-'''
+
 
 for x in range(0,len(neurons)):
   for y in range(0,len(neurons)):
@@ -160,7 +160,8 @@ for x in range(0,len(neurons)):
       # for k in range(0,11):
       if ((x == y) | (x == z) | (y == z)):
           continue
-      
+
+      '''      
       # begin copied over stuff
       np.random.seed(1)
       code = np.random.normal(0, 1, shape)
@@ -177,7 +178,7 @@ for x in range(0,len(neurons)):
 
       # Lower bound of 0 due to ReLU
       lower_bound = np.zeros(4096)
-
+      '''
 
 
       for i in range(0,total_iters):
