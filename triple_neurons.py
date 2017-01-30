@@ -1,4 +1,5 @@
-# using open_nsfw, I tried to replicate the bramblings from the paper
+# using open_nsfw, I first tried to replicate the bramblings from the paper.
+# then, I tried to activate three neurons at once.
 
 import os
 os.environ['GLOG_minloglevel'] = '2'
@@ -129,57 +130,11 @@ lower_bound = np.zeros(4096)
 
 for x in range(0,len(neurons)):
   for y in range(0,len(neurons)):
-
-    '''
-    for i in range(0,total_iters):
-      step_size = (alpha + (1e-10 - alpha) * i) / total_iters
-      gx, image = grad(net, 'fc8', neurons[x], code)
-      gx = gx.copy()
-      gy, image = grad(net, 'fc8', neurons[y], code)
-      
-      # To generate image
-      g = (gx + gy) - (0.5 * abs(gx - gy))
-      
-      print norm(gx), norm(gy)
-
-      if norm(g) <= 1e-8:
-        break
-      code = code - step_size*g/np.abs(g).mean()
-      code = np.maximum(code, lower_bound) 
-
-      # 1*upper bound produces realistic looking images
-      # No upper bound produces dramatic high saturation pics
-      # 1.5* Upper bound is a decent choice
-      code = np.minimum(code, 1.5*upper_bound) 
-
-    save_image(image, "output/triple_neurons/sanity" + datetime.datetime.now().strftime("%Y%m%d") + "_pairwise" + str(neurons[x]) + "_" + str(neurons[y]) + ".jpg")
-    print "finished with image"
-    '''
     for z in range (0, len(neurons)):
       # copied and pasted because I'm trash
       # for k in range(0,11):
       if ((x == y) | (x == z) | (y == z)):
           continue
-
-      '''      
-      # begin copied over stuff
-      np.random.seed(1)
-      code = np.random.normal(0, 1, shape)
-
-      total_iters = 300
-
-      alpha = 1
-      # Load the activation range
-      upper_bound = lower_bound = None
-
-      # Set up clipping bounds
-      upper_bound = np.loadtxt("act_range/3x/fc6.txt", delimiter=' ', usecols=np.arange(0, 4096), unpack=True)
-      upper_bound = upper_bound.reshape(4096)
-
-      # Lower bound of 0 due to ReLU
-      lower_bound = np.zeros(4096)
-      '''
-
 
       for i in range(0,total_iters):
         step_size = (alpha + (1e-10 - alpha) * i) / total_iters
