@@ -140,7 +140,7 @@ for i in range(0,total_iters):
   # 1.5* Upper bound is a decent choice
   code = np.minimum(code, 1.5*upper_bound) 
 
-  save_image(image, "output/frames/" + datetime.datetime.now().strftime("%Y%m%d") + "_" + str(neuron) + "_" + str(i) + ".jpg")
+  save_image(image, "output/frames/" + datetime.datetime.now().strftime("%Y%m%d") + "_" + str(neuron) + "_" + str(i).zfill(2) + ".jpg")
   print "generated frame " + str(i)
 print "finished with generating frames"
 
