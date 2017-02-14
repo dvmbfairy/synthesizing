@@ -1,4 +1,4 @@
-# copied from triple_neurons to create film frames
+# copied from videoframes to create film frames with transitions
 
 import os
 os.environ['GLOG_minloglevel'] = '2'
@@ -107,7 +107,7 @@ Generate Random Picture
 np.random.seed()
 code = np.random.normal(0, 1, shape)
 
-total_iters = 300
+total_iters = 200
 
 
 alpha = 1
@@ -122,16 +122,16 @@ upper_bound = upper_bound.reshape(4096)
 lower_bound = np.zeros(4096)
 
 
-neuron = 951 # lemon neuron
+neurons = [951, 417] # lemon, balloon
 frame_rate = 2
 
 print "starting generating frames"
 
-for i in range(0,total_iters/frame_rate):
+for i in range(0,total_iters/frame_rate * len(neurons)):
 
   for f in range(0, frame_rate):
     step_size = (alpha + (1e-10 - alpha) * i) / total_iters
-    g, image = grad(net, 'fc8', neuron, code)
+    g, image = grad(net, 'fc8', neurons[i // (total_iters/frame_rate)], code)
 
     if norm(g) <= 1e-8:
       break
@@ -141,9 +141,11 @@ for i in range(0,total_iters/frame_rate):
     # 1*upper bound produces realistic looking images
     # No upper bound produces dramatic high saturation pics
     # 1.5* Upper bound is a decent choice
-    code = np.minimum(code, 1.5*upper_bound) 
+    code = np.minimum(code, 1.5*upper_bound)
+    
+    print "working on neuron " + str(neurons[i // (total_iters/frame_rate)]) 
 
-  save_image(image, "output/frames/" + datetime.datetime.now().strftime("%Y%m%d") + "_" + str(neuron) + "_" + str(i).zfill(3) + ".jpg")
+  save_image(image, "output/frames_transitions/" + datetime.datetime.now().strftime("%Y%m%d") + "_" + str(i).zfill(3) + ".jpg")
   print "generated frame " + str(i)
 print "finished with generating frames"
 
