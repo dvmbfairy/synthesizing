@@ -19,6 +19,8 @@ import scipy.misc, scipy.io
 import patchShow
 import datetime
 
+import act_max
+
 caffe.set_mode_gpu()
 
 def save_image(img, name):
@@ -107,6 +109,8 @@ Generate Random Picture
 np.random.seed()
 code = np.random.normal(0, 1, shape)
 
+code, picture = act_max.get_code("images/checker.jpg", "fc6") 
+
 total_iters = 300
 
 
@@ -121,8 +125,9 @@ upper_bound = upper_bound.reshape(4096)
 # Lower bound of 0 due to ReLU
 lower_bound = np.zeros(4096)
 
+neurons = {'lemon' : 951, 'balloon' : 417}
 
-neuron = 951 # lemon neuron
+neuron = neurons['balloon']
 frame_rate = 2
 
 print "starting generating frames"
